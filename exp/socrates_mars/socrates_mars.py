@@ -2,7 +2,7 @@ import numpy as np
 
 from isca import IscaCodeBase, SocratesCodeBase, DiagTable, Experiment, Namelist, GFDL_BASE
 from isca.util import exp_progress
-from ntfy import notify
+#from ntfy import notify
 import os
 
 NCORES = 32
@@ -274,4 +274,4 @@ if __name__=="__main__":
                 for i in range(2, 241):
 #                with exp_progress(exp, description='o%.0f d{day}' % scale):
                     exp.run(i, num_cores=NCORES)
-                notify('top down with conv scheme = '+conv+' has completed', 'isca')
+#                notify('top down with conv scheme = '+conv+' has completed', 'isca')
