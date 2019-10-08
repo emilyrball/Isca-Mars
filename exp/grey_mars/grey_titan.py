@@ -157,7 +157,13 @@ namelist = Namelist({
         'do_water_correction': False,
         'vert_coord_option': 'input',
         'initial_sphum': 0.,
-        'valid_range_T': [0, 700]
+        'valid_range_T': [0, 700],
+        'ocean_topog_smoothing': 0.8,   # Set from Dann's Mars script
+    },
+
+    'spectral_init_cond_nml': {
+        'topog_file_name' : 'titan_land_t42.nc', #!!! Name of land input file, which will also contain topography
+        'topography_option' : 'input' #!!! Tell model to get topography from input file
     },
 
     'vert_coordinate_nml': {
@@ -172,7 +178,7 @@ namelist = Namelist({
         'sw_diff':0.0,
         'ir_tau_eq':2,        
         'ir_tau_pole':2,
-        'linear_tau': 1.0,
+        'linear_tau': 0.1,
         'equinox_day':0.0,
         'use_time_average_coszen':True,
         'solar_constant':15.078,
@@ -234,7 +240,7 @@ if __name__=="__main__":
     for conv in conv_schemes:
         for depth_val in depths:
             for per_value in pers:
-                exp = Experiment('grey_titan_test', codebase=cb) #'grey_mars_titan_solarconst_mk36_per_value'+str((per_value))+'_'+conv+'_mld_'+str(depth_val), codebase=cb)
+                exp = Experiment('grey_titan_test_linear_tau0.1', codebase=cb) #'grey_mars_titan_solarconst_mk36_per_value'+str((per_value))+'_'+conv+'_mld_'+str(depth_val), codebase=cb)
                 exp.clear_rundir()
 
                 exp.diag_table = diag
