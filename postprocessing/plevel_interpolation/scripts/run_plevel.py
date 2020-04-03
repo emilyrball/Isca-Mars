@@ -7,11 +7,11 @@ import pdb
 import subprocess
 
 start_time=time.time()
-base_dir='/scratch/sit204/data_isca/'
-exp_name_list = ['project_3_omega_normal']
+base_dir='$GFDL_DATA'
+exp_name_list = ['held_suarez_default']
 avg_or_daily_list=['monthly']
-start_file=13
-end_file=24
+start_file=1
+end_file=2
 nfiles=(end_file-start_file)+1
 
 do_extra_averaging=False #If true, then 6hourly data is averaged into daily data using cdo
@@ -30,7 +30,7 @@ var_names={}
 
 if level_set=='standard':
 
-    plevs['monthly']=' -p "3 16 51 138 324 676 1000 1266 2162 3407 5014 6957 9185 10000 11627 14210 16864 19534 20000 22181 24783 27331 29830 32290 34731 37173 39637 42147 44725 47391 50164 53061 56100 59295 62661 66211 70000 73915 78095 82510 85000 87175 92104 97312"'
+    plevs['monthly']=' -p "3 16 51"'
 
     plevs['timestep']=' -p "3 16 51 138 324 676 1000 1266 2162 3407 5014 6957 9185 10000 11627 14210 16864 19534 20000 22181 24783 27331 29830 32290 34731 37173 39637 42147 44725 47391 50164 53061 56100 59295 62661 66211 70000 73915 78095 82510 85000 87175 92104 97312"'
 
@@ -39,7 +39,7 @@ if level_set=='standard':
     plevs['6hourly']=' -p "1000 10000 25000 50000 85000 92500"'
     plevs['daily']  =' -p "1000 10000 25000 50000 85000 92500"'
     
-    var_names['monthly']='-a slp height'
+    var_names['monthly']='-a'
     var_names['pentad']='-a slp height'    
     var_names['timestep']='-a'
     var_names['6hourly']='ucomp slp height vor t_surf vcomp omega'
