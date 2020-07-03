@@ -22,6 +22,8 @@ use         mixed_layer_mod, only: mixed_layer_init, mixed_layer, mixed_layer_en
 
 use         lscale_cond_mod, only: lscale_cond_init, lscale_cond, lscale_cond_end
 
+use      lscale_cond_mod_lh, only: lscale_cond_lh_init, lscale_cond_lh, lscale_cond_lh_end
+
 use qe_moist_convection_mod, only: qe_moist_convection_init, qe_moist_convection, qe_moist_convection_end
 
 use                 ras_mod, only: ras_init, ras_end, ras
@@ -152,7 +154,7 @@ namelist / idealized_moist_phys_nml / turb, lwet_convection, do_bm, do_ras, roug
                                       gp_surface, convection_scheme,          &
                                       bucket, init_bucket_depth, init_bucket_depth_land, & !RG Add bucket 
                                       max_bucket_depth_land, robert_bucket, raw_bucket,  &
-                                      do_lscale_cond, do_socrates_radiation
+                                      do_lscale_cond, do_socrates_radiation, do_lscale_cond_lh
 
 
 integer, parameter :: num_time_levels = 2 !RG Add bucket - number of time levels added to allow timestepping in this module
@@ -593,6 +595,7 @@ if(turb) then
 end if
 
 call lscale_cond_init()
+call lscale_cond_lh_init()
 
 axes = get_axis_id()
 
@@ -686,6 +689,9 @@ end select
 
 if (r_conv_scheme .eq. DRY_CONV .and. do_lscale_cond .eq. .true.) then
         call error_mesg('idealized_moist_phys','do_lscale_cond is .true. but r_conv_scheme is dry. These options may not be consistent.', WARNING)
+endif
+if (r_conv_scheme .eq. DRY_CONV .and. do_lscale_cond_lh .eq. .true.) then
+        call error_mesg('idealized_moist_phys','do_lscale_cond_lh is .true. but r_conv_scheme is dry. These options may not be consistent.', WARNING)
 endif
 
 if(two_stream_gray) call two_stream_gray_rad_init(is, ie, js, je, num_levels, get_axis_id(), Time, rad_lonb_2d, rad_latb_2d, dt_real)
@@ -891,6 +897,34 @@ if ( do_lscale_cond .eq. .true.) then
   ! inconsistent with the dry convection scheme, don't run it!
   rain = 0.0; snow = 0.0
   call lscale_cond (         tg_tmp,                          qg_tmp,        &
+             p_full(:,:,:,previous),          p_half(:,:,:,previous),        &
+                              coldT,                            rain,        &
+                               snow,                      cond_dt_tg,        &
+                         cond_dt_qg )
+
+  cond_dt_tg = cond_dt_tg/delta_t
+  cond_dt_qg = cond_dt_qg/delta_t
+  depth_change_cond = rain/dens_h2o     ! RG Add bucket
+  rain       = rain/delta_t
+  snow       = snow/delta_t
+  precip     = precip + rain + snow
+
+  dt_tg = dt_tg + cond_dt_tg
+  dt_tracers(:,:,:,nsphum) = dt_tracers(:,:,:,nsphum) + cond_dt_qg
+
+  if(id_cond_dt_qg > 0) used = send_data(id_cond_dt_qg, cond_dt_qg, Time)
+  if(id_cond_dt_tg > 0) used = send_data(id_cond_dt_tg, cond_dt_tg, Time)
+  if(id_cond_rain  > 0) used = send_data(id_cond_rain, rain, Time)
+  if(id_precip     > 0) used = send_data(id_precip, precip, Time)
+
+endif
+
+! Perform large scale convection with latent heating
+if ( do_lscale_cond_lh .eq. .true.) then
+  ! Large scale convection is a function of humidity only.  This is
+  ! inconsistent with the dry convection scheme, don't run it!
+  rain = 0.0; snow = 0.0
+  call lscale_cond_lh (      tg_tmp,                          qg_tmp,        &
              p_full(:,:,:,previous),          p_half(:,:,:,previous),        &
                               coldT,                            rain,        &
                                snow,                      cond_dt_tg,        &
