@@ -8,8 +8,8 @@ import subprocess
 
 start_time=time.time()
 base_dir='$GFDL_DATA'
-exp_name_list = ['held_suarez_default']
-avg_or_daily_list=['monthly']
+exp_name_list = ['soc_mars_mk36_per_value70.85_none_mld_2.0']
+avg_or_daily_list=['daily']
 start_file=1
 end_file=2
 nfiles=(end_file-start_file)+1
@@ -30,20 +30,20 @@ var_names={}
 
 if level_set=='standard':
 
-    plevs['monthly']=' -p "3 16 51"'
+    plevs['monthly']=' -p "300 400 500"'
 
     plevs['timestep']=' -p "3 16 51 138 324 676 1000 1266 2162 3407 5014 6957 9185 10000 11627 14210 16864 19534 20000 22181 24783 27331 29830 32290 34731 37173 39637 42147 44725 47391 50164 53061 56100 59295 62661 66211 70000 73915 78095 82510 85000 87175 92104 97312"'
 
     plevs['pentad']=' -p "3 16 51 138 324 676 1000 1266 2162 3407 5014 6957 9185 10000 11627 14210 16864 19534 20000 22181 24783 27331 29830 32290 34731 37173 39637 42147 44725 47391 50164 53061 56100 59295 62661 66211 70000 73915 78095 82510 85000 87175 92104 97312"'
 
     plevs['6hourly']=' -p "1000 10000 25000 50000 85000 92500"'
-    plevs['daily']  =' -p "1000 10000 25000 50000 85000 92500"'
+    plevs['daily']  =' -p "1 10 20 40 60 80 100 125 150 175 200 225 250 275 300 325 350 375 400 450 500 550 625"'
     
     var_names['monthly']='-a'
     var_names['pentad']='-a slp height'    
     var_names['timestep']='-a'
     var_names['6hourly']='ucomp slp height vor t_surf vcomp omega'
-    var_names['daily']='ucomp slp height vor t_surf vcomp omega temp'
+    var_names['daily']='-a'
     file_suffix='_interp_new_height_temp'
 
 elif level_set=='ssw_diagnostics':
