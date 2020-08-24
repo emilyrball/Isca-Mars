@@ -192,12 +192,12 @@ real, allocatable, dimension(:,:)   :: res
 real, allocatable, dimension(:,:,:) :: zsurf, ps
 
 real, parameter :: tlapse = 6.5e-3
-real, parameter :: tref   = 288.
+real, parameter :: tref   = 223.
 real, parameter :: ginv = 1./GRAV
 real, parameter :: gorg = GRAV / (RDGAS*tlapse)
 real, parameter :: mrgog = -1./gorg
 real, parameter :: d608 = (RVGAS-RDGAS)/RDGAS
-real, parameter :: pref = 101325.
+real, parameter :: pref = 610.
 real, parameter :: rgog = RDGAS*tlapse/GRAV
 
 !#######################################################################
