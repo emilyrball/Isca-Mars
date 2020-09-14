@@ -169,7 +169,7 @@ ELSE
 END IF
 
 ! Aerosols
-control%l_aerosol      = .FALSE.
+control%l_aerosol      = .TRUE.
 control%l_aerosol_mode = .FALSE.
 control%l_aerosol_ccn  = .FALSE.
 
