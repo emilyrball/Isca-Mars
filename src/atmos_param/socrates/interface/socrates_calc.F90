@@ -25,11 +25,11 @@ contains
 ! Set up the call to the Socrates radiation scheme
 ! -----------------------------------------------------------------------------
 !DIAG Added Time
-subroutine socrates_calc(Time_diag,control, spectrum,                                    &
+subroutine socrates_calc(Time_diag,control, spectrum,                          &
   n_profile, n_layer, n_cloud_layer, n_aer_mode,                               &
   cld_subcol_gen, cld_subcol_req,                                              &
   p_layer, t_layer, t_layer_boundaries, d_mass, density,                       &
-  h2o, o3, co2,                                                                &
+  h2o, o3, co2, dust,                                                          &
   t_rad_surf, cos_zenith_angle, solar_irrad, orog_corr,                        &
   l_planet_grey_surface, planet_albedo, planet_emissivity,                     &
   layer_heat_capacity,                                                         &
@@ -45,12 +45,12 @@ use def_cld,      only: StrCld,   deallocate_cld, deallocate_cld_prsc
 use def_aer,      only: StrAer,   deallocate_aer, deallocate_aer_prsc
 use def_out,      only: StrOut,   deallocate_out
 
-use set_control_mod, only: set_control
-use set_dimen_mod,   only: set_dimen
-use set_atm_mod,     only: set_atm
-use set_bound_mod,   only: set_bound
-use set_cld_mod,     only: set_cld
-use set_aer_mod,     only: set_aer
+use set_control_mod,  only: set_control
+use set_dimen_mod,    only: set_dimen
+use set_atm_mod,      only: set_atm
+use set_bound_mod,    only: set_bound
+use set_cld_mod,      only: set_cld
+use socrates_set_aer, only: set_aer
 
 use soc_constants_mod,   only: i_def, r_def
 
@@ -94,6 +94,9 @@ real(r_def), intent(in) :: o3(n_profile, n_layer)
 !   Mass mixing ratio of ozone
 real(r_def), intent(in) :: co2(n_profile, n_layer)
 !   Mass mixing ratio of carbon dioxide
+
+real(r_def), intent(in) :: dust(n_profile, n_layer)
+!   Mass mixing ratio of dust
 
 real(r_def), intent(in) :: t_rad_surf(n_profile)
 !   Effective radiative temperature over whole grid-box
@@ -167,7 +170,7 @@ call set_bound(control, dimen, spectrum, bound, n_profile,                     &
 
 call set_cld(control, dimen, spectrum, cld, n_profile)
 
-call set_aer(control, dimen, spectrum, aer, n_profile)
+call set_aer(control, dimen, spectrum, aer, n_profile, n_layer, dust)
 
 ! DEPENDS ON: radiance_calc
 call radiance_calc(control, dimen, spectrum, atm, cld, aer, bound, radout)
