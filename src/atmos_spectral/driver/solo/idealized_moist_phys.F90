@@ -926,7 +926,7 @@ if ( do_lscale_cond_lh .eq. .true.) then
   snow       = snow/delta_t
   precip     = precip + rain + snow
 
-  dt_tg = dt_tg + cond_lh_dt_tg
+!  dt_tg = dt_tg + cond_lh_dt_tg
   dt_tracers(:,:,:,nsphum) = dt_tracers(:,:,:,nsphum) + cond_lh_dt_qg
 
   if(id_cond_lh_dt_qg > 0) used = send_data(id_cond_lh_dt_qg, cond_lh_dt_qg, Time)

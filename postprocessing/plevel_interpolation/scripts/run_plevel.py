@@ -8,10 +8,10 @@ import subprocess
 
 start_time=time.time()
 base_dir='$GFDL_DATA'
-exp_name_list = ['soc_mars_mk36_per_value70.85_none_mld_2.0_with_mola_topo_lh_floor']
+exp_name_list = ['soc_mars_mk36_per_value70.85_none_mld_2.0_cdod_cold_lh_rel']
 avg_or_daily_list=['daily']
 start_file=1
-end_file=58
+end_file=4
 nfiles=(end_file-start_file)+1
 
 do_extra_averaging=False #If true, then 6hourly data is averaged into daily data using cdo
