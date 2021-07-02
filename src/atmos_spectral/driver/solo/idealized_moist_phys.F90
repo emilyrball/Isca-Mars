@@ -919,14 +919,14 @@ if ( do_lscale_cond_lh .eq. .true.) then
                                snow,                   cond_lh_dt_tg,        &
                      cond_lh_dt_qg                            )
 
-  !cond_lh_dt_tg = cond_lh_dt_tg/delta_t
+  cond_lh_dt_tg = cond_lh_dt_tg/delta_t
   cond_lh_dt_qg = cond_lh_dt_qg/delta_t
   depth_change_cond = rain/dens_h2o     ! RG Add bucket
   rain       = rain/delta_t
   snow       = snow/delta_t
   precip     = precip + rain + snow
 
-!  dt_tg = dt_tg + cond_lh_dt_tg
+  dt_tg = dt_tg + cond_lh_dt_tg
   dt_tracers(:,:,:,nsphum) = dt_tracers(:,:,:,nsphum) + cond_lh_dt_qg
 
   if(id_cond_lh_dt_qg > 0) used = send_data(id_cond_lh_dt_qg, cond_lh_dt_qg, Time)

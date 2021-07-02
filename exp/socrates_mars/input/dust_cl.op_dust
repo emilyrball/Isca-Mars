@@ -1,0 +1,54 @@
+netcdf dust_cl.op_dust{                                                         
+
+dimensions:
+    lat            =   1;
+    lon            =   1;
+    plev           =   7;
+    mom            =   1;
+    band           =   1;
+
+
+variables:
+    float lat(lat);                                                           
+             lat:units = "degree";                                            
+             lat:title = "latitude";                                         
+    float lon(lon);                                                           
+             lon:units = "degree";                                            
+             lon:title = "longitude";                                        
+    float plev(plev);                                                         
+             plev:units = "pa";                                               
+             plev:title = "pressure level";                                  
+    int mom(mom);                                                             
+             mom:units = "none";                                              
+             mom:title = "moment";                                           
+    int band(band);                                                           
+             band:units = "none";                                             
+             band:title = "spectral band";                                   
+
+    float abs(band,plev,lon,lat);                                              
+             abs:units = "m-1";                                               
+             abs:title = "absorption";                                                       
+
+    float scat(band,plev,lon,lat);                                             
+             scat:units = "m-1";                                              
+             scat:title = "scattering";                                                      
+
+    float phf(band,mom,plev,lon,lat);                                          
+             phf:units = "none";                                              
+             phf:title = "phase function";                                                   
+
+data:
+              lat =  0.000000E+00;
+              lon =  0.000000E+00;
+             plev =  0.316000E+01, 0.777000E+01, 0.191000E+02, 0.470000E+02,
+                     0.115000E+03, 0.284000E+03, 0.610000E+03;
+              mom =     1;
+             band =     1;
+              abs =  0.631163E-08, 0.154869E-07, 0.379866E-07, 0.935056E-07,
+                     0.231426E-06, 0.566878E-06, 0.140258E-05;
+             scat =  0.144180E-10, 0.353775E-10, 0.867751E-10, 0.213600E-09,
+                     0.528661E-09, 0.129495E-08, 0.320400E-08;
+              phf =  0.418532E-02, 0.418532E-02, 0.418532E-02, 0.418532E-02,
+                     0.418532E-02, 0.418532E-02, 0.418532E-02;
+
+}
